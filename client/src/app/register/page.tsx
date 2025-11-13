@@ -24,7 +24,11 @@ export default function RegisterPage() {
     try {
       const data = await register(formData.username, formData.email, formData.password);
       toast.success('Registration successful! Please check your email to verify your account.');
-      router.push('/verify-email');
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+    //   router.push('/verify-email');
+    
     } catch (error: any) {
       const message = error.response?.data?.message || 'Registration failed';
       toast.error(message);
