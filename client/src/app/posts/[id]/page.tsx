@@ -62,7 +62,7 @@ export default function PostPage() {
 
   if (!post) return null;
 
-  const isOwner = user?.id === post.author._id;
+  const isOwner = user && post && String(user.id) === String(post.author._id);
   const isAdmin = user?.role === 'admin';
 
   return (

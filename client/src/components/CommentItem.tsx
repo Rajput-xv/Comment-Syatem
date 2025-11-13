@@ -20,7 +20,7 @@ interface CommentItemProps {
 // Single comment/reply item with actions
 export default function CommentItem({ comment, onUpdate, level = 0 }: CommentItemProps) {
   const { user } = useAuth();
-  const [isLiked, setIsLiked] = useState(comment.likes.includes(user?.id || ''));
+  const [isLiked, setIsLiked] = useState(user?.id ? comment.likes.includes(String(user.id)) : false);
   const [likesCount, setLikesCount] = useState(comment.likesCount);
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -28,7 +28,7 @@ export default function CommentItem({ comment, onUpdate, level = 0 }: CommentIte
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
 
-  const isOwner = user?.id === comment.author._id;
+  const isOwner = user && comment && String(user.id) === String(comment.author._id);
   const isAdmin = user?.role === 'admin';
 
   const handleLike = async () => {
