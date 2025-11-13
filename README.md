@@ -5,48 +5,48 @@ A modern, full-stack social-style comment system built with Next.js, TypeScript,
 ## Features
 
 ### Authentication & Users
-- ✅ User registration with email verification
-- ✅ Email login with JWT authentication
-- ✅ Google OAuth integration
-- ✅ Protected routes for verified users only
-- ✅ User profile management
+- User registration with email verification
+- Email login with JWT authentication
+- Google OAuth integration
+- Protected routes for verified users only
+- User profile management
 
 ### Posts & Content
-- ✅ Create, read, update, and delete posts
-- ✅ Rich text content support
-- ✅ Optional image attachments
-- ✅ Author information display
-- ✅ Pagination for posts
+- Create, read, update, and delete posts
+- Rich text content support
+- Optional image attachments
+- Author information display
+- Pagination for posts
 
 ### Comments & Replies
-- ✅ Multi-level nested comment threads
-- ✅ Real-time comment creation
-- ✅ Edit and delete own comments
-- ✅ Author and timestamp display
-- ✅ Comment count per post
-- ✅ Pagination for comments and replies
-- ✅ Sort by recent or most liked
+- Multi-level nested comment threads
+- Real-time comment creation
+- Edit and delete own comments
+- Author and timestamp display
+- Comment count per post
+- Pagination for comments and replies
+- Sort by recent or most liked
 
 ### Likes & Interactions
-- ✅ Like/unlike comments and replies
-- ✅ Toggle behavior (one like per user)
-- ✅ Total like count display
-- ✅ View users who liked
+- Like/unlike comments and replies
+- Toggle behavior (one like per user)
+- Total like count display
+- View users who liked
 
 ### Permissions & Moderation
-- ✅ Only owners can edit their content
-- ✅ Admin role for moderation
-- ✅ Delete inappropriate content
-- ✅ Rate limiting (5 comments per minute)
+- Only owners can edit their content
+- Admin role for moderation
+- Delete inappropriate content
+- Rate limiting (5 comments per minute)
 
 ### UI/UX
-- ✅ Modern, clean design with Tailwind CSS
-- ✅ Smooth animations with Framer Motion
-- ✅ Responsive mobile and desktop layouts
-- ✅ Interactive hover effects
-- ✅ Loading skeletons
-- ✅ Toast notifications
-- ✅ Intuitive nested thread view
+- Modern, clean design with Tailwind CSS
+- Smooth animations with Framer Motion
+- Responsive mobile and desktop layouts
+- Interactive hover effects
+- Loading skeletons
+- Toast notifications
+- Intuitive nested thread view
 
 ## Tech Stack
 
@@ -376,14 +376,14 @@ To prevent abuse, the following rate limits are enforced:
 
 ## Security Best Practices
 
-- ✅ Passwords hashed with bcrypt (12 rounds)
-- ✅ JWT tokens for authentication
-- ✅ HTTP-only cookies (production recommended)
-- ✅ Input validation on all endpoints
-- ✅ Rate limiting to prevent abuse
-- ✅ Email verification required
-- ✅ CORS configured for specific origin
-- ✅ No sensitive data in client
+- Passwords hashed with bcrypt (12 rounds)
+- JWT tokens for authentication
+- HTTP-only cookies (production recommended)
+- Input validation on all endpoints
+- Rate limiting to prevent abuse
+- Email verification required
+- CORS configured for specific origin
+- No sensitive data in client
 
 ## Future Enhancements
 
