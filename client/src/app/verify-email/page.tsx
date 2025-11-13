@@ -1,41 +1,46 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { verifyEmail } from '@/services/auth';
 import toast from 'react-hot-toast';
 import { CheckCircle, XCircle } from 'lucide-react';
 
-// Email verification page
-export default function VerifyEmailPage() {
+// Email verification content component
+function VerifyEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
-  const [status, setStatus] = React.useState<'loading' | 'success' | 'error'>('loading');
+  const [status, setStatus] = useState<'verifying' | 'success' | 'error'>('verifying');
 
   useEffect(() => {
-    if (token) {
-      handleVerify();
-    }
-  }, [token]);
-
-  const handleVerify = async () => {
-    try {
-      await verifyEmail(token!);
-      setStatus('success');
-      toast.success('Email verified successfully!');
-      setTimeout(() => router.push('/login'), 3000);
-    } catch (error: any) {
+    const token = searchParams.get('token');
+    
+    if (!token) {
       setStatus('error');
-      toast.error(error.response?.data?.message || 'Verification failed');
+      toast.error('Invalid verification link');
+      return;
     }
-  };
+
+    const verify = async () => {
+      try {
+        await verifyEmail(token);
+        setStatus('success');
+        toast.success('Email verified successfully!');
+        setTimeout(() => router.push('/login'), 2000);
+      } catch (error: any) {
+        setStatus('error');
+        toast.error(error.response?.data?.message || 'Verification failed');
+      }
+    };
+
+    verify();
+  }, [searchParams, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
       <div className="w-full max-w-md">
         <div className="card text-center">
-          {status === 'loading' && (
+          {status === 'verifying' && (
             <>
               <div className="inline-block w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mb-4"></div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Verifying Email</h2>
@@ -67,5 +72,18 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Email verification page with Suspense wrapper
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="inline-block w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
