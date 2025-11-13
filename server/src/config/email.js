@@ -1,8 +1,8 @@
-import nodemailer from 'nodemailer';
+import { createTransport } from 'nodemailer';
 
 // Create email transporter for sending verification emails
 export const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT) || 587,
     secure: false, // true for 465, false for other ports
@@ -18,12 +18,23 @@ export const createTransporter = () => {
 
 // Send verification email to user
 export const sendVerificationEmail = async (email, token) => {
+  console.log('📨 [Email Service] Starting email send process...');
+  console.log('   To:', email);
+  console.log('   Token:', token.substring(0, 10) + '...');
+  
   try {
     const transporter = createTransporter();
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
+    
+    console.log('   Verification URL:', verificationUrl);
+    console.log('   SMTP Config:', {
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      user: process.env.EMAIL_USER
+    });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"CommentHub" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Verify Your Email - CommentHub',
       html: `
@@ -41,11 +52,17 @@ export const sendVerificationEmail = async (email, token) => {
       `,
     };
 
+    console.log('   Sending email via SMTP...');
     const info = await transporter.sendMail(mailOptions);
-    console.log('Verification email sent:', info.messageId);
+    console.log('✅ [Email Service] Email sent successfully!');
+    console.log('   Message ID:', info.messageId);
+    console.log('   Response:', info.response);
     return info;
   } catch (error) {
-    console.error('Failed to send verification email:', error.message);
+    console.error('❌ [Email Service] Email send failed!');
+    console.error('   Error:', error.message);
+    console.error('   Code:', error.code);
+    console.error('   Stack:', error.stack);
     throw error;
   }
 };
