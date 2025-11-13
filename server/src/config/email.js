@@ -48,5 +48,5 @@ export const sendVerificationEmail = async (email, token) => {
       console.error('   Response:', error.response.body);
     }
     throw error;
-  }
+  } 
 };
