@@ -23,8 +23,12 @@ export const register = async (req, res) => {
       verificationTokenExpiry: tokenExpiry,
     });
 
-    await sendVerificationEmail(email, verificationToken);
+    // Send email asynchronously without blocking the response
+    sendVerificationEmail(email, verificationToken).catch(error => {
+      console.error('Failed to send verification email:', error);
+    });
 
+    // Respond immediately without waiting for email
     res.status(201).json({
       message: 'Registration successful. Please check your email to verify your account.',
       userId: user._id,
