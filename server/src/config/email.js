@@ -1,45 +1,22 @@
-import { createTransport } from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
-// Create email transporter for sending verification emails
-export const createTransporter = () => {
-  return createTransport({
-    host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT) || 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false
-    },
-    // Increase timeout for slow connections
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 5000,
-    socketTimeout: 10000
-  });
-};
+// Initialize SendGrid with API key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Send verification email to user
+// Send verification email using SendGrid
 export const sendVerificationEmail = async (email, token) => {
-  console.log('📨 [Email Service] Starting email send process...');
+  console.log('📨 [SendGrid] Starting email send process...');
   console.log('   To:', email);
   console.log('   Token:', token.substring(0, 10) + '...');
   
   try {
-    const transporter = createTransporter();
     const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${token}`;
     
     console.log('   Verification URL:', verificationUrl);
-    console.log('   SMTP Config:', {
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      user: process.env.EMAIL_USER
-    });
 
-    const mailOptions = {
-      from: `"CommentHub" <${process.env.EMAIL_USER}>`,
+    const msg = {
       to: email,
+      from: process.env.SENDGRID_FROM_EMAIL, // Must be verified sender in SendGrid
       subject: 'Verify Your Email - CommentHub',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -56,17 +33,17 @@ export const sendVerificationEmail = async (email, token) => {
       `,
     };
 
-    console.log('   Sending email via SMTP...');
-    const info = await transporter.sendMail(mailOptions);
-    console.log('[Email Service] Email sent successfully!');
-    console.log('   Message ID:', info.messageId);
-    console.log('   Response:', info.response);
-    return info;
+    console.log('   Sending email via SendGrid...');
+    const response = await sgMail.send(msg);
+    console.log('[SendGrid] Email sent successfully!');
+    console.log('   Status Code:', response[0].statusCode);
+    return response;
   } catch (error) {
-    console.error('[Email Service] Email send failed!');
+    console.error('[SendGrid] Email send failed!');
     console.error('   Error:', error.message);
-    console.error('   Code:', error.code);
-    console.error('   Stack:', error.stack);
+    if (error.response) {
+      console.error('   Response:', error.response.body);
+    }
     throw error;
   }
 };

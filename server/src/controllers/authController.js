@@ -1,11 +1,6 @@
 import User from '../models/User.js';
 import { generateToken, generateVerificationToken } from '../utils/token.js';
-import { sendVerificationEmail as sendEmailSMTP } from '../config/email.js';
-import { sendVerificationEmail as sendEmailResend } from '../config/email-resend.js';
-
-const sendVerificationEmail = process.env.NODE_ENV === 'production' 
-  ? sendEmailResend 
-  : sendEmailSMTP;
+import { sendVerificationEmail } from '../config/email.js';
 
 // Register new user and send verification email
 export const register = async (req, res) => {

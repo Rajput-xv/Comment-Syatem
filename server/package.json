@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/Rajput-xv/Comment-Syatem#readme",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
@@ -38,10 +39,8 @@
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
-    "nodemailer": "^7.0.10",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0",
-    "resend": "^4.0.1"
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
