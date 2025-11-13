@@ -35,7 +35,7 @@ export const createComment = async (req, res) => {
       });
     }
 
-    const populatedComment = await Comment.findById(comment._id).populate('author', 'username avatar');
+    const populatedComment = await Comment.findById(comment._id).populate('author', 'username avatar role');
 
     res.status(201).json(populatedComment);
   } catch (error) {
@@ -59,7 +59,7 @@ export const getComments = async (req, res) => {
 
     const total = await Comment.countDocuments({ post: postId, parentComment: null });
     const comments = await Comment.find({ post: postId, parentComment: null })
-      .populate('author', 'username avatar')
+      .populate('author', 'username avatar role')
       .sort(sortOption)
       .skip(skip)
       .limit(limit);
@@ -91,7 +91,7 @@ export const getReplies = async (req, res) => {
 
     const total = await Comment.countDocuments({ parentComment: commentId });
     const replies = await Comment.find({ parentComment: commentId })
-      .populate('author', 'username avatar')
+      .populate('author', 'username avatar role')
       .sort(sortOption)
       .skip(skip)
       .limit(limit);
@@ -124,7 +124,7 @@ export const updateComment = async (req, res) => {
     comment.isEdited = true;
     await comment.save();
 
-    const updatedComment = await Comment.findById(comment._id).populate('author', 'username avatar');
+    const updatedComment = await Comment.findById(comment._id).populate('author', 'username avatar role');
 
     res.json(updatedComment);
   } catch (error) {

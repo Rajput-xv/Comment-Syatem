@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // Main navigation bar component
 export default function Navbar() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -43,7 +43,14 @@ export default function Navbar() {
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold shadow-md group-hover:shadow-lg transition-all">
                       {user?.username.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors">{user?.username}</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors">{user?.username}</span>
+                      {isAdmin && (
+                        <span className="text-xs font-bold bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-0.5 rounded-full">
+                          ADMIN
+                        </span>
+                      )}
+                    </div>
                   </motion.div>
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: 5 }}
@@ -97,7 +104,14 @@ export default function Navbar() {
                       {user?.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{user?.username}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-gray-900">{user?.username}</p>
+                        {isAdmin && (
+                          <span className="text-xs font-bold bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-0.5 rounded-full">
+                            ADMIN
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
                   </div>

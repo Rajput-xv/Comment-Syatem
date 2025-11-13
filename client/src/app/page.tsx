@@ -114,7 +114,14 @@ export default function HomePage() {
                         {post.author.username.charAt(0).toUpperCase()}
                       </motion.div>
                       <div>
-                        <p className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{post.author.username}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{post.author.username}</p>
+                          {post.author.role === 'admin' && (
+                            <span className="text-xs font-bold bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-0.5 rounded-full">
+                              ADMIN
+                            </span>
+                          )}
+                        </div>
                         <div className="flex items-center text-sm text-gray-500">
                           <Calendar size={14} className="mr-1" />
                           {format(new Date(post.createdAt), 'MMM dd, yyyy')}

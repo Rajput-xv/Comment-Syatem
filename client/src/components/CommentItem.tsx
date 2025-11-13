@@ -95,6 +95,11 @@ export default function CommentItem({ comment, onUpdate, level = 0 }: CommentIte
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-2">
                 <span className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{comment.author.username}</span>
+                {comment.author.role === 'admin' && (
+                  <span className="text-xs font-bold bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-0.5 rounded-full">
+                    ADMIN
+                  </span>
+                )}
                 <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                   {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                 </span>

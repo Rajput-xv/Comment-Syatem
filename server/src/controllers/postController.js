@@ -12,7 +12,7 @@ export const createPost = async (req, res) => {
       author: req.user.id,
     });
 
-    const populatedPost = await Post.findById(post._id).populate('author', 'username avatar');
+    const populatedPost = await Post.findById(post._id).populate('author', 'username avatar role');
 
     res.status(201).json(populatedPost);
   } catch (error) {
@@ -29,7 +29,7 @@ export const getPosts = async (req, res) => {
 
     const total = await Post.countDocuments();
     const posts = await Post.find()
-      .populate('author', 'username avatar')
+      .populate('author', 'username avatar role')
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
@@ -48,7 +48,7 @@ export const getPosts = async (req, res) => {
 // Get single post by ID
 export const getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id).populate('author', 'username avatar');
+    const post = await Post.findById(req.params.id).populate('author', 'username avatar role');
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
@@ -80,7 +80,7 @@ export const updatePost = async (req, res) => {
 
     await post.save();
 
-    const updatedPost = await Post.findById(post._id).populate('author', 'username avatar');
+    const updatedPost = await Post.findById(post._id).populate('author', 'username avatar role');
 
     res.json(updatedPost);
   } catch (error) {

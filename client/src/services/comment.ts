@@ -7,6 +7,7 @@ export interface Comment {
     _id: string;
     username: string;
     avatar: string;
+    role: string;
   };
   post: string;
   parentComment: string | null;
