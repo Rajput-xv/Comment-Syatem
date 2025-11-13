@@ -6,6 +6,8 @@ import {
   verifyEmail,
   getMe,
   resendVerification,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import { registerValidation, loginValidation, validate } from '../middleware/validator.js';
@@ -18,6 +20,8 @@ router.post('/register', authLimiter, registerValidation, validate, register);
 router.post('/login', authLimiter, loginValidation, validate, login);
 router.get('/verify-email', verifyEmail);
 router.post('/resend-verification', authLimiter, resendVerification);
+router.post('/forgot-password', authLimiter, forgotPassword);
+router.post('/reset-password', authLimiter, resetPassword);
 router.get('/me', protect, getMe);
 
 router.get(

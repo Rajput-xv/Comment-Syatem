@@ -48,3 +48,15 @@ export const resendVerification = async (email: string) => {
 export const googleLogin = () => {
   window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
 };
+
+// Forgot password - send reset email
+export const forgotPassword = async (email: string) => {
+  const response = await api.post('/auth/forgot-password', { email });
+  return response.data;
+};
+
+// Reset password with token
+export const resetPassword = async (token: string, password: string) => {
+  const response = await api.post('/auth/reset-password', { token, password });
+  return response.data;
+};

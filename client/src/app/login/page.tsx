@@ -86,6 +86,15 @@ export default function LoginPage() {
               </div>
             </div>
 
+            <div className="flex items-center justify-end mt-2">
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             <button type="submit" disabled={loading} className="btn-primary w-full shine-effect mt-6">
               <span>{loading ? 'Logging in...' : 'Login'}</span>
             </button>
