@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { Menu, X, User, LogOut, PlusCircle } from 'lucide-react';
+import { Menu, X, User, LogOut, PlusCircle, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Main navigation bar component
@@ -12,47 +12,62 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">C</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">CommentHub</span>
+          <Link href="/" className="flex items-center space-x-3 group">
+            <motion.div 
+              className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300"
+              whileHover={{ scale: 1.1, rotate: 360 }}
+              transition={{ duration: 0.6 }}
+            >
+              <MessageCircle className="text-white" size={22} />
+            </motion.div>
+            <span className="text-xl font-bold gradient-text">CommentHub</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link href="/posts/create" className="btn-primary flex items-center space-x-2">
-                  <PlusCircle size={18} />
-                  <span>Create Post</span>
-                </Link>
-                <div className="flex items-center space-x-3 pl-4 border-l border-gray-200">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-medium">
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link href="/posts/create" className="btn-primary flex items-center space-x-2 shine-effect">
+                    <PlusCircle size={18} />
+                    <span>Create Post</span>
+                  </Link>
+                </motion.div>
+                <div className="flex items-center space-x-3 pl-4 border-l border-white/30">
+                  <motion.div 
+                    className="flex items-center space-x-2 cursor-pointer group"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold shadow-md group-hover:shadow-lg transition-all">
                       {user?.username.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm font-medium text-gray-700">{user?.username}</span>
-                  </div>
-                  <button
+                    <span className="text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition-colors">{user?.username}</span>
+                  </motion.div>
+                  <motion.button
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={logout}
-                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300"
                     title="Logout"
                   >
                     <LogOut size={20} />
-                  </button>
+                  </motion.button>
                 </div>
               </>
             ) : (
               <>
-                <Link href="/login" className="btn-secondary">
-                  Login
-                </Link>
-                <Link href="/register" className="btn-primary">
-                  Sign Up
-                </Link>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link href="/login" className="btn-secondary">
+                    Login
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link href="/register" className="btn-primary shine-effect">
+                    Sign Up
+                  </Link>
+                </motion.div>
               </>
             )}
           </div>

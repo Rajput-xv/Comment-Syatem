@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getPosts, Post } from '@/services/post';
-import { MessageCircle, Calendar } from 'lucide-react';
+import { MessageCircle, Calendar, PlusCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
@@ -44,46 +44,77 @@ export default function HomePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to CommentHub</h1>
-        <p className="text-gray-600">Share your thoughts and engage with the community</p>
-      </div>
+      <motion.div 
+        className="mb-12 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-5xl md:text-6xl font-extrabold gradient-text mb-4 floating">
+          Welcome to CommentHub
+        </h1>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          Share your thoughts and engage with a vibrant community ✨
+        </p>
+      </motion.div>
 
       {loading ? (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="card animate-pulse">
-              <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-            </div>
+            <motion.div 
+              key={i} 
+              className="glass-card animate-pulse"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <div className="h-7 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl w-3/4 mb-4"></div>
+              <div className="h-5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-full mb-2"></div>
+              <div className="h-5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg w-5/6"></div>
+            </motion.div>
           ))}
         </div>
       ) : posts.length === 0 ? (
-        <div className="card text-center py-12">
-          <p className="text-gray-500 mb-4">No posts yet. Be the first to create one!</p>
-          <Link href="/posts/create" className="btn-primary inline-block">
-            Create Post
-          </Link>
-        </div>
+        <motion.div 
+          className="glass-card text-center py-16"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-indigo-400 to-purple-400 flex items-center justify-center">
+            <MessageCircle size={40} className="text-white" />
+          </div>
+          <p className="text-gray-600 text-lg mb-6">No posts yet. Be the first to create one!</p>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/posts/create" className="btn-primary inline-flex items-center space-x-2 shine-effect">
+              <PlusCircle size={20} />
+              <span>Create Post</span>
+            </Link>
+          </motion.div>
+        </motion.div>
       ) : (
         <>
-          <div className="space-y-6">
+          <div className="space-y-8">
             {posts.map((post, index) => (
               <motion.div
                 key={post._id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                whileHover={{ scale: 1.02 }}
               >
                 <Link href={`/posts/${post._id}`}>
-                  <div className="card hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="glass-card hover:shadow-2xl transition-all cursor-pointer group">
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-medium">
+                      <motion.div 
+                        className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-md"
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.6 }}
+                      >
                         {post.author.username.charAt(0).toUpperCase()}
-                      </div>
+                      </motion.div>
                       <div>
-                        <p className="font-medium text-gray-900">{post.author.username}</p>
+                        <p className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{post.author.username}</p>
                         <div className="flex items-center text-sm text-gray-500">
                           <Calendar size={14} className="mr-1" />
                           {format(new Date(post.createdAt), 'MMM dd, yyyy')}
@@ -91,20 +122,22 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mb-3">{post.title}</h2>
-                    <p className="text-gray-700 line-clamp-3 mb-4">{post.content}</p>
+                    <h2 className="text-3xl font-extrabold text-gray-900 mb-4 group-hover:gradient-text transition-all">{post.title}</h2>
+                    <p className="text-gray-700 line-clamp-3 mb-4 leading-relaxed">{post.content}</p>
 
                     {post.image && (
-                      <img
+                      <motion.img
                         src={post.image}
                         alt={post.title}
-                        className="w-full h-64 object-cover rounded-lg mb-4"
+                        className="w-full h-72 object-cover rounded-2xl mb-4 shadow-md"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.3 }}
                       />
                     )}
 
-                    <div className="flex items-center text-gray-500">
-                      <MessageCircle size={18} className="mr-1" />
-                      <span className="text-sm">
+                    <div className="flex items-center space-x-2 text-indigo-600 font-medium">
+                      <MessageCircle size={20} />
+                      <span>
                         {post.commentsCount} {post.commentsCount === 1 ? 'Comment' : 'Comments'}
                       </span>
                     </div>

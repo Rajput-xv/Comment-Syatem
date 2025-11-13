@@ -76,24 +76,29 @@ export default function CommentItem({ comment, onUpdate, level = 0 }: CommentIte
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`${level > 0 ? 'ml-8 border-l-2 border-gray-200 pl-4' : ''}`}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4 }}
+      className={`${level > 0 ? 'ml-8 border-l-2 border-gradient-to-b from-indigo-200 to-purple-200 pl-6' : ''}`}
     >
-      <div className="bg-white rounded-lg p-4 mb-3 hover:shadow-sm transition-shadow">
-        <div className="flex items-start space-x-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white font-medium flex-shrink-0">
+      <div className="glass-card p-5 mb-4 hover:shadow-xl transition-all group">
+        <div className="flex items-start space-x-4">
+          <motion.div 
+            className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md"
+            whileHover={{ scale: 1.1, rotate: 180 }}
+            transition={{ duration: 0.5 }}
+          >
             {comment.author.username.charAt(0).toUpperCase()}
-          </div>
+          </motion.div>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="font-medium text-gray-900">{comment.author.username}</span>
-                <span className="text-sm text-gray-500 ml-2">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center space-x-2">
+                <span className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{comment.author.username}</span>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                   {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                 </span>
-                {comment.isEdited && <span className="text-xs text-gray-400 ml-2">(edited)</span>}
+                {comment.isEdited && <span className="text-xs text-indigo-500 font-medium">(edited)</span>}
               </div>
 
               {(isOwner || isAdmin) && (
@@ -133,59 +138,81 @@ export default function CommentItem({ comment, onUpdate, level = 0 }: CommentIte
             </div>
 
             {isEditing ? (
-              <div className="mt-2">
+              <motion.div 
+                className="mt-3"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+              >
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   className="input-field resize-none"
                   rows={3}
                 />
-                <div className="flex space-x-2 mt-2">
-                  <button onClick={handleEdit} className="btn-primary text-sm">
+                <div className="flex space-x-2 mt-3">
+                  <motion.button 
+                    onClick={handleEdit} 
+                    className="btn-primary text-sm px-4 py-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     Save
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={() => {
                       setIsEditing(false);
                       setEditContent(comment.content);
                     }}
-                    className="btn-secondary text-sm"
+                    className="btn-secondary text-sm px-4 py-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     Cancel
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             ) : (
-              <p className="mt-1 text-gray-700 whitespace-pre-wrap">{comment.content}</p>
+              <p className="mt-2 text-gray-700 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
             )}
 
-            <div className="flex items-center space-x-4 mt-3">
-              <button
+            <div className="flex items-center space-x-6 mt-4">
+              <motion.button
                 onClick={handleLike}
-                className={`flex items-center space-x-1 text-sm transition-colors ${
+                className={`flex items-center space-x-2 text-sm font-medium transition-all ${
                   isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
                 }`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                <Heart size={16} fill={isLiked ? 'currentColor' : 'none'} />
-                <span>{likesCount}</span>
-              </button>
+                <motion.div
+                  animate={isLiked ? { scale: [1, 1.3, 1] } : {}}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} />
+                </motion.div>
+                <span className="font-semibold">{likesCount}</span>
+              </motion.button>
 
-              <button
+              <motion.button
                 onClick={() => setShowReplyForm(!showReplyForm)}
-                className="flex items-center space-x-1 text-sm text-gray-500 hover:text-primary-600 transition-colors"
+                className="flex items-center space-x-2 text-sm font-medium text-gray-500 hover:text-indigo-600 transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <MessageCircle size={16} />
+                <MessageCircle size={18} />
                 <span>Reply</span>
-              </button>
+              </motion.button>
 
               {comment.repliesCount > 0 && (
-                <button
+                <motion.button
                   onClick={() => setShowReplies(!showReplies)}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-sm font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-pink-600 transition-all"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {showReplies ? 'Hide' : 'View'} {comment.repliesCount}{' '}
                   {comment.repliesCount === 1 ? 'reply' : 'replies'}
-                </button>
+                </motion.button>
               )}
             </div>
 
