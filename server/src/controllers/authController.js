@@ -53,6 +53,14 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Check if email is verified
+    if (!user.isVerified) {
+      return res.status(403).json({ 
+        message: 'Please verify your email before logging in. Check your inbox for the verification link.',
+        requiresVerification: true 
+      });
+    }
+
     const token = generateToken(user._id);
 
     res.json({
