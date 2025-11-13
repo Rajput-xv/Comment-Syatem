@@ -57,7 +57,7 @@ A modern, full-stack social-style comment system built with Next.js, TypeScript,
 - **Mongoose** - ODM
 - **JWT** - Authentication
 - **Bcrypt** - Password hashing
-- **Nodemailer** - Email verification
+- **Brevo (Sendinblue)** - Email delivery service
 - **Passport.js** - Google OAuth
 - **Express Rate Limit** - API rate limiting
 - **Express Validator** - Input validation
@@ -162,11 +162,10 @@ MONGODB_URI=mongodb://localhost:27017/comment-system
 JWT_SECRET=your_secure_random_secret_key_here
 JWT_EXPIRE=7d
 
-# Gmail SMTP Settings
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-gmail-app-password
+# Brevo (Sendinblue) Email Settings
+BREVO_API_KEY=your-brevo-api-key
+BREVO_FROM_EMAIL=your-verified-email@example.com
+BREVO_FROM_NAME=CommentHub
 
 CLIENT_URL=http://localhost:3000
 
@@ -174,14 +173,17 @@ CLIENT_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 SESSION_SECRET=your-session-secret
+SESSION_TTL_SECONDS=86400
 ```
 
-#### 2.3 Setup Gmail App Password
+#### 2.3 Setup Brevo (Sendinblue) Email Service
 
-1. Go to your Google Account settings
-2. Enable 2-Step Verification
-3. Generate an App Password at https://myaccount.google.com/apppasswords
-4. Use this password in `EMAIL_PASS`
+1. Sign up for a free account at [Brevo](https://www.brevo.com/)
+2. Go to Settings → SMTP & API
+3. Create a new API key
+4. Copy the API key to `BREVO_API_KEY` in your `.env` file
+5. Verify your sender email address in Brevo dashboard
+6. Use the verified email in `BREVO_FROM_EMAIL`
 
 #### 2.4 Setup Google OAuth (Optional)
 
