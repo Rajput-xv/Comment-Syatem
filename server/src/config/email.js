@@ -5,14 +5,18 @@ export const createTransporter = () => {
   return createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT) || 587,
-    secure: false, // true for 465, false for other ports
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false // Accept self-signed certificates
-    }
+      rejectUnauthorized: false
+    },
+    // Increase timeout for slow connections
+    connectionTimeout: 10000, // 10 seconds
+    greetingTimeout: 5000,
+    socketTimeout: 10000
   });
 };
 
@@ -54,12 +58,12 @@ export const sendVerificationEmail = async (email, token) => {
 
     console.log('   Sending email via SMTP...');
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ [Email Service] Email sent successfully!');
+    console.log('[Email Service] Email sent successfully!');
     console.log('   Message ID:', info.messageId);
     console.log('   Response:', info.response);
     return info;
   } catch (error) {
-    console.error('❌ [Email Service] Email send failed!');
+    console.error('[Email Service] Email send failed!');
     console.error('   Error:', error.message);
     console.error('   Code:', error.code);
     console.error('   Stack:', error.stack);
