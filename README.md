@@ -1,6 +1,6 @@
 # CommentHub - Social Comment System
 
-A modern, full-stack social-style comment system built with Next.js, TypeScript, Express, and MongoDB. Features nested comments, real-time interactions, email verification, and Google OAuth authentication.
+A modern, full-stack social-style comment system built with Next.js, TypeScript, Express and MongoDB. Features nested comments, real-time interactions, email verification and Google OAuth authentication.
 
 ## Features
 
@@ -12,7 +12,7 @@ A modern, full-stack social-style comment system built with Next.js, TypeScript,
 - User profile management
 
 ### Posts & Content
-- Create, read, update, and delete posts
+- Create, read, update and delete posts
 - Rich text content support
 - Optional image attachments
 - Author information display
@@ -63,7 +63,7 @@ A modern, full-stack social-style comment system built with Next.js, TypeScript,
 - **Express Validator** - Input validation
 
 ### Frontend
-- **Next.js 14** - React framework
+- **Next.js** - React framework
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
 - **Framer Motion** - Animations
@@ -102,7 +102,7 @@ Comment-System/
 │   │   │   └── token.js          # Token utilities
 │   │   └── index.js              # Server entry point
 │   ├── package.json
-│   └── .env.example
+│   └── .env
 │
 └── client/
     ├── src/
@@ -131,7 +131,7 @@ Comment-System/
     │   └── lib/
     │       └── axios.ts          # HTTP client setup
     ├── package.json
-    └── .env.local.example
+    └── .env.local
 ```
 
 ## Setup Instructions
@@ -192,18 +192,6 @@ SESSION_SECRET=your-session-secret
 5. Add authorized redirect URI: `http://localhost:5000/api/auth/google/callback`
 6. Copy Client ID and Client Secret to `.env`
 
-#### 2.5 Start MongoDB
-
-Make sure MongoDB is running:
-
-```bash
-# On Windows
-net start MongoDB
-
-# On Mac/Linux
-sudo systemctl start mongod
-```
-
 #### 2.6 Start Backend Server
 
 ```bash
@@ -224,12 +212,6 @@ npm install
 #### 3.2 Configure Environment Variables
 
 Create `.env.local` file in the `client` directory:
-
-```bash
-cp .env.local.example .env.local
-```
-
-Edit `.env.local`:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
@@ -291,7 +273,7 @@ GET    /api/comments/:id/likes               # Get users who liked
 
 ### 1. Register a New Account
 1. Click "Sign Up" in the navigation bar
-2. Fill in username, email, and password
+2. Fill in username, email and password
 3. Click "Sign Up"
 4. Check your email for verification link
 5. Click the verification link
@@ -338,52 +320,6 @@ To prevent abuse, the following rate limits are enforced:
 
 - **Comments**: 5 per minute per user
 - **Authentication**: 5 attempts per 15 minutes
-
-## Development Tips
-
-### Backend
-- Use `npm run dev` for auto-restart on file changes
-- Check MongoDB connection at startup
-- API runs on port 5000 by default
-- Logs appear in the console
-
-### Frontend
-- Use `npm run dev` for hot-reload development
-- TypeScript errors will show in the console
-- The app will auto-refresh on changes
-- Check browser console for client-side errors
-
-### Common Issues
-
-**MongoDB Connection Failed**
-- Ensure MongoDB is running
-- Check `MONGODB_URI` in `.env`
-- Verify MongoDB port (default: 27017)
-
-**Email Verification Not Working**
-- Verify Gmail App Password is correct
-- Check spam folder for verification emails
-- Ensure 2-Step Verification is enabled on Google Account
-
-**Google OAuth Not Working**
-- Verify redirect URI matches exactly
-- Check Client ID and Secret
-- Ensure Google+ API is enabled
-
-**Port Already in Use**
-- Change `PORT` in server `.env`
-- Or stop the process using the port
-
-## Security Best Practices
-
-- Passwords hashed with bcrypt (12 rounds)
-- JWT tokens for authentication
-- HTTP-only cookies (production recommended)
-- Input validation on all endpoints
-- Rate limiting to prevent abuse
-- Email verification required
-- CORS configured for specific origin
-- No sensitive data in client
 
 ## Future Enhancements
 
